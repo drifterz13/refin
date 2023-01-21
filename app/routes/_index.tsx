@@ -4,7 +4,9 @@ import FundAmcDropdown from '~/components/FundAmcDropdown.react'
 import { getAllFundAmc } from '~/lib/fund'
 
 export async function loader() {
-  return json({ fundAmcList: await getAllFundAmc() })
+  const fundAmcList = await getAllFundAmc()
+
+  return json({ fundAmcList })
 }
 
 export default function Index() {
