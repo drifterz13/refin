@@ -1,4 +1,5 @@
-import { allFundAmcSchema } from './schema'
+import { fundAmcListSchema, fundListSchema } from './schema'
+import { FundAMC, FundStatus } from './types'
 
 function createFundAmcClient() {
   const baseUrl = 'https://api.sec.or.th/FundFactsheet'
@@ -21,7 +22,18 @@ export const fundAmcClient = createFundAmcClient()
 export const getAllFundAmc = async () => {
   const data = await fundAmcClient.get('/fund/amc')
   const dataJSON = await data.json()
-  const allFundAmc = allFundAmcSchema.parse(dataJSON)
 
-  return allFundAmc
+  return fundAmcListSchema.parse(dataJSON)
+}
+
+export const getFundAmcListById = async (id: FundAMC['unique_id']) => {
+  const data = await fundAmcClient.get(`/fund/amc/${id}`)
+  const dataJSON = await data.json()
+
+  const fundList = fundListSchema.parse(dataJSON)
+  const activeFundList = fundList.filter(
+    (fund) => fund.fund_status === FundStatus.RG
+  )
+
+  return activeFundList
 }

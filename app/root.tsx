@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+import LeftNavBar from './components/LeftNavBar.react'
 
 import styles from './styles/app.css'
 
@@ -28,7 +29,15 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <div className='min-h-screen flex flex-col'>
+          <header className='bg-red-50'>Header</header>
+          <div className='flex-1 flex flex-col sm:flex-row'>
+            <main className='flex-1 bg-indigo-100'>
+              <Outlet />
+            </main>
+            <LeftNavBar />
+          </div>
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
