@@ -20,16 +20,17 @@ export default function Fund() {
   const [searchedFunds, setSearchedFunds] = useState<Fund[]>()
 
   useEffect(() => {
-    if (fundSearcherRef.current) {
-      return
-    }
-
     data.fundList.then((funds) => {
-      fundSearcherRef.current = createfundSearcher(funds, ['proj_abbr_name'])
+      setSearchedFunds(undefined)
+      fundSearcherRef.current = createfundSearcher(funds, [
+        'proj_abbr_name',
+        'proj_name_en',
+      ])
     })
   }, [data])
 
-  const seeAllVisible = !searchedFunds && !seeAll
+  const seeAllVisible =
+    !seeAll && (!searchedFunds || searchedFunds.length > INITIAL_DISPLAY)
 
   return (
     <section>
@@ -75,7 +76,7 @@ export default function Fund() {
                 </div>
                 {seeAllVisible ? (
                   <div
-                    className='font-semibold text-right text-blue-600 cursor-pointer hover:underline'
+                    className='font-semibold text-sm text-right text-blue-600 cursor-pointer hover:underline'
                     onClick={setSeeAll}
                   >
                     See all
