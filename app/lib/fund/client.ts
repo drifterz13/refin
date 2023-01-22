@@ -53,3 +53,7 @@ export const getFundAmcListById = async (
 
   return activeFundList
 }
+
+export const getFundAggregateInfo = () => {
+
+}

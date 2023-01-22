@@ -1,11 +1,14 @@
-import { getFundAmcListById } from '~/lib/fund/client'
+import { Suspense, useEffect, useReducer, useRef, useState } from 'react'
 
 import { defer, LoaderArgs } from '@remix-run/node'
-import { Await, useLoaderData } from '@remix-run/react'
-import { Suspense, useEffect, useReducer, useRef, useState } from 'react'
-import Spinner from '~/components/Spinner.react'
+import { Await, Outlet, useLoaderData } from '@remix-run/react'
+
+import { getFundAmcListById } from '~/lib/fund/client'
 import { createfundSearcher, Fund } from '~/lib/fund'
+
+import Spinner from '~/components/Spinner.react'
 import SearchBox from '~/components/SearchBox.react'
+import FundItem from '~/components/FundItem.react'
 
 const INITIAL_DISPLAY = 20
 
@@ -13,7 +16,7 @@ export async function loader({ params }: LoaderArgs) {
   return defer({ fundList: getFundAmcListById(params.id as string) })
 }
 
-export default function Fund() {
+export default function Funds() {
   const fundSearcherRef = useRef<ReturnType<typeof createfundSearcher>>()
   const data = useLoaderData<typeof loader>()
   const [seeAll, setSeeAll] = useReducer(() => true, false)
@@ -87,19 +90,8 @@ export default function Fund() {
           }}
         </Await>
       </Suspense>
-    </section>
-  )
-}
 
-function FundItem(props: { fund: Fund }) {
-  return (
-    <div className='col-span-1 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100'>
-      <h5 className='mb-2 text-xl font-bold tracking-tight text-gray-900'>
-        {props.fund.proj_abbr_name}
-      </h5>
-      <p className='font-normal text-sm text-gray-700'>
-        {props.fund.proj_name_th}
-      </p>
-    </div>
+      <Outlet />
+    </section>
   )
 }
