@@ -31,7 +31,6 @@ export const getFundAmcListById = async (
   id: FundAMC['unique_id']
 ): Promise<Fund[]> => {
   const cached = fundListCache.get(id)
-  console.log('Remaining ttl: ', fundListCache.getRemainingTTL(id))
   if (cached) {
     console.log(`Serve list of fund cache for amc: ${id}`)
     return cached
@@ -45,7 +44,11 @@ export const getFundAmcListById = async (
     (fund) => fund.fund_status === FundStatus.RG
   )
 
-  fundListCache.set(String(id), activeFundList)
+  if (activeFundList.length === 0) {
+    return activeFundList
+  }
+
+  fundListCache.set(id, activeFundList)
   console.log(`Total cache size: ${fundListCache.calculatedSize} bytes`)
 
   return activeFundList
