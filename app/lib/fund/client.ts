@@ -1,5 +1,6 @@
+import { fundListCache } from '../cache'
 import { fundAmcListSchema, fundListSchema } from './schema'
-import { FundAMC, FundStatus } from './types'
+import { Fund, FundAMC, FundStatus } from './types'
 
 function createFundAmcClient() {
   const baseUrl = 'https://api.sec.or.th/FundFactsheet'
@@ -26,7 +27,16 @@ export const getAllFundAmc = async () => {
   return fundAmcListSchema.parse(dataJSON)
 }
 
-export const getFundAmcListById = async (id: FundAMC['unique_id']) => {
+export const getFundAmcListById = async (
+  id: FundAMC['unique_id']
+): Promise<Fund[]> => {
+  const cached = fundListCache.get(id)
+  console.log('Remaining ttl: ', fundListCache.getRemainingTTL(id))
+  if (cached) {
+    console.log(`Serve list of fund cache for amc: ${id}`)
+    return cached
+  }
+
   const data = await fundAmcClient.get(`/fund/amc/${id}`)
   const dataJSON = await data.json()
 
@@ -34,6 +44,9 @@ export const getFundAmcListById = async (id: FundAMC['unique_id']) => {
   const activeFundList = fundList.filter(
     (fund) => fund.fund_status === FundStatus.RG
   )
+
+  fundListCache.set(String(id), activeFundList)
+  console.log(`Total cache size: ${fundListCache.calculatedSize} bytes`)
 
   return activeFundList
 }
