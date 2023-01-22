@@ -14,7 +14,7 @@ export default function Fund() {
 
   return (
     <section>
-      <h2 className='text-xl font-semibold text-gray-800 mb-2'>Funds</h2>
+      <h2 className='text-xl font-semibold text-gray-800 mb-5'>Funds</h2>
 
       <Suspense fallback={<Spinner />}>
         <Await resolve={data.fundList}>

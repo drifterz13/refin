@@ -58,7 +58,7 @@ export default function FundAmcSelectList(props: Props) {
                   }
                   value={fundAmc}
                   disabled={fundAmc.disabled}
-                  onClick={() => navigate(`/funds/${fundAmc.unique_id}`)}
+                  onClick={() => navigate(`/amc/${fundAmc.unique_id}`)}
                 >
                   {({ selected }) => (
                     <>

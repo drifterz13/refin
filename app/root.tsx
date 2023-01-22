@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
-import LeftNavBar from './components/LeftNavBar.react'
+import Navbar from './components/Navbar.react'
 
 import styles from './styles/app.css'
 
@@ -30,12 +30,11 @@ export default function App() {
       </head>
       <body>
         <div className='min-h-screen flex flex-col'>
-          <header className='bg-red-50'>Header</header>
+          <Navbar />
           <div className='flex-1 flex flex-col sm:flex-row'>
-            <main className='flex-1 bg-indigo-100'>
+            <main className='flex-1 bg-slate-100 p-10'>
               <Outlet />
             </main>
-            <LeftNavBar />
           </div>
         </div>
         <ScrollRestoration />

@@ -17,7 +17,7 @@ export default function FundsIndex() {
   const selectableFundList = useMemo(() => {
     const defaultItem = {
       unique_id: 'fund_amc',
-      name_en: 'Fund AMC',
+      name_en: "Fund's AMC",
       disabled: true,
     }
 
@@ -41,7 +41,7 @@ export default function FundsIndex() {
 
   return (
     <div>
-      <div className='text-2xl mb-2 font-semibold'>Setup your port</div>
+      <h2 className='text-xl font-semibold text-gray-800 mb-5'>Select Fund's AMC</h2>
       <FundAmcSelectList
         fundAmcList={selectableFundList}
         selectedFund={selectedFund}
