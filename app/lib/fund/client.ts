@@ -10,6 +10,7 @@ import {
   FundAMC,
   FundPerformance,
   FundStatus,
+  PerformancePeriod,
   PerformanceType,
 } from './types'
 import _ from 'lodash'
@@ -90,6 +91,10 @@ export const getFundByAbbrName = async (
 
 export const getFundPerformance = async (id: Fund['proj_id']) => {
   const data = await fundAmcClient.get(`/fund/${id}/performance`)
+  if (data.status === 204) {
+    return {}
+  }
+
   const dataJSON = await data.json()
   const fundPerfList = fundPerfListSchema.parse(dataJSON)
 
@@ -100,15 +105,52 @@ export const getFundPerformance = async (id: Fund['proj_id']) => {
 
   const groupedFundPerf: Record<
     FundPerformance['class_abbr_name'],
-    Record<FundPerformance['reference_period'], FundPerformance[]>
+    Record<
+      PerformanceType,
+      Record<FundPerformance['reference_period'], FundPerformance>
+    >
   > = Object.keys(fundPerfGroupByAbbr).reduce((acc, abbr) => {
     const fundPerf = fundPerfGroupByAbbr[abbr]
-    const fundPerfGroupedByPeriod = _.groupBy(
-      fundPerf,
-      (fundPerf) => fundPerf.reference_period
+
+    const fundReturnPerf = fundPerf.filter(
+      (perf) => perf.performance_type_desc === PerformanceType.FUND_RETURN
+    )
+    const fundVolatilityPerf = fundPerf.filter(
+      (perf) => perf.performance_type_desc === PerformanceType.FUND_VOLA
+    )
+    const indicatorReturnPerf = fundPerf.filter(
+      (perf) => perf.performance_type_desc === PerformanceType.INDI_RETURN
+    )
+    const indicatorVolatilityPerf = fundPerf.filter(
+      (perf) => perf.performance_type_desc === PerformanceType.INDI_VOLA
     )
 
-    return { ...acc, [abbr]: fundPerfGroupedByPeriod }
+    const getPerfPeriodMapFundPerf = (
+      fundPerfs: FundPerformance[]
+    ): Record<FundPerformance['reference_period'], FundPerformance> => {
+      return Object.values(PerformancePeriod).reduce(
+        (acc, period) => ({
+          ...acc,
+          [period]: fundPerfs.find((perf) => perf.reference_period === period),
+        }),
+        {}
+      )
+    }
+
+    const fundPerfGroupedByType: Record<
+      PerformanceType,
+      ReturnType<typeof getPerfPeriodMapFundPerf>
+    > = {
+      [PerformanceType.FUND_RETURN]: getPerfPeriodMapFundPerf(fundReturnPerf),
+      [PerformanceType.FUND_VOLA]: getPerfPeriodMapFundPerf(fundVolatilityPerf),
+      [PerformanceType.INDI_RETURN]:
+        getPerfPeriodMapFundPerf(indicatorReturnPerf),
+      [PerformanceType.INDI_VOLA]: getPerfPeriodMapFundPerf(
+        indicatorVolatilityPerf
+      ),
+    }
+
+    return { ...acc, [abbr]: fundPerfGroupedByType }
   }, {})
 
   return groupedFundPerf

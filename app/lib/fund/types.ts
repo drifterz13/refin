@@ -48,3 +48,13 @@ export enum PerformanceType {
   FUND_RETURN = 'ผลตอบแทนกองทุนรวม',
   INDI_RETURN = 'ผลตอบแทนตัวชี้วัด',
 }
+
+export enum PerformancePeriod {
+  '3M' = '3_month',
+  '6M' = '6_month',
+  YTD = 'year_to_date',
+  '1Y' = '1_year',
+  '5Y' = '5_year',
+  '10Y' = '10_year',
+  MAX = 'ตั้งแต่จัดตั้ง',
+}

@@ -2,7 +2,10 @@ import { FundPerformance, PerformanceType } from '~/lib/fund/types'
 
 type Props = {
   abbr: string
-  fundPerfs: Record<FundPerformance['reference_period'], FundPerformance[]>
+  fundPerfs: Record<
+    PerformanceType,
+    Record<FundPerformance['reference_period'], FundPerformance>
+  >
 }
 
 export default function FundPerformanceTable(props: Props) {
@@ -24,7 +27,7 @@ export default function FundPerformanceTable(props: Props) {
         <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
           <tr>
             <th scope='col' className='px-6 py-3'>
-              Perf. Type
+              Performance type
             </th>
             {periods.map((p) => (
               <th key={p.key} scope='col' className='px-6 py-3'>
@@ -46,9 +49,7 @@ export default function FundPerformanceTable(props: Props) {
                 {perfType}
               </th>
               {periods.map((period, idx) => {
-                const perf = (props.fundPerfs[period.key] ?? []).find(
-                  (p) => p.performance_type_desc === perfType
-                )
+                const perf = props.fundPerfs[perfType][period.key]
 
                 return (
                   <td

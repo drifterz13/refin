@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { FundStatus, PerformanceType } from './types'
+import { FundStatus, PerformancePeriod, PerformanceType } from './types'
 
 const fundAmcSchema = z.object({
   last_upd_date: z.string(),
@@ -41,7 +41,15 @@ const fundPerfSchema = z.object({
     PerformanceType.FUND_RETURN,
     PerformanceType.INDI_RETURN,
   ]),
-  reference_period: z.string(),
+  reference_period: z.enum([
+    PerformancePeriod['3M'],
+    PerformancePeriod['6M'],
+    PerformancePeriod['1Y'],
+    PerformancePeriod.YTD,
+    PerformancePeriod['5Y'],
+    PerformancePeriod['10Y'],
+    PerformancePeriod.MAX,
+  ]),
   performance_val: z.string(),
   as_of_date: z.string(),
 })

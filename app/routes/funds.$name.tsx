@@ -24,6 +24,12 @@ export default function FundFromAbbrName() {
 
       <hr className='h-0.5 bg-gray-800 w-full my-5' />
 
+      {Object.keys(fundPerf).length === 0 && (
+        <h6 className='text-lg text-gray-800'>
+          Fund performance is not available.
+        </h6>
+      )}
+
       {Object.keys(fundPerf).map((abbr) => {
         return (
           <FundPerformanceTable
