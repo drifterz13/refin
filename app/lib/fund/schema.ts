@@ -54,3 +54,10 @@ const fundPerfSchema = z.object({
   as_of_date: z.string(),
 })
 export const fundPerfListSchema = z.array(fundPerfSchema)
+
+export const fundPolicySchema = z.object({
+  last_upd_date: z.string(),
+  policy_desc: z.string(),
+  investment_policy_desc: z.string(),
+  management_style: z.string(),
+})

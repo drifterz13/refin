@@ -58,3 +58,10 @@ export enum PerformancePeriod {
   '10Y' = '10_year',
   MAX = 'ตั้งแต่จัดตั้ง',
 }
+
+export type FundPolicy = {
+  last_upd_date: string
+  policy_desc: string
+  investment_policy_desc: string
+  management_style: string
+}

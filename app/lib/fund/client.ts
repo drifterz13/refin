@@ -3,12 +3,14 @@ import {
   fundAmcListSchema,
   fundListSchema,
   fundPerfListSchema,
+  fundPolicySchema,
   fundSchema,
 } from './schema'
 import {
   Fund,
   FundAMC,
   FundPerformance,
+  FundPolicy,
   FundStatus,
   PerformancePeriod,
   PerformanceType,
@@ -154,4 +156,24 @@ export const getFundPerformance = async (id: Fund['proj_id']) => {
   }, {})
 
   return groupedFundPerf
+}
+
+export const getFundPolicy = async (
+  id: Fund['proj_id']
+): Promise<FundPolicy> => {
+  const data = await fundAmcClient.get(`/fund/${id}/policy`)
+  const dataJSON = await data.json()
+
+  const encodedPolicyDesc = Buffer.from(
+    dataJSON.investment_policy_desc,
+    'base64'
+  )
+  const decodedPolicyDesc = encodedPolicyDesc.toString('utf8')
+
+  const fundPolicy = fundPolicySchema.parse({
+    ...dataJSON,
+    investment_policy_desc: decodedPolicyDesc,
+  })
+
+  return fundPolicy
 }

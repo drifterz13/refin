@@ -19,9 +19,11 @@ export default function FundPerformanceTable(props: Props) {
 
   return (
     <div className='relative overflow-x-auto mt-10'>
-      <div className='text-sm font-semibold text-slate-600 mb-2'>
-        {props.abbr}
-      </div>
+      {props.abbr === '-' ? null : (
+        <div className='text-sm font-semibold text-slate-600 mb-2'>
+          {props.abbr}
+        </div>
+      )}
 
       <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
         <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
@@ -58,7 +60,9 @@ export default function FundPerformanceTable(props: Props) {
                     data-perf-type={perfType}
                     className='px-6 py-4'
                   >
-                    {perf?.performance_val ?? '-'}
+                    {perf?.performance_val
+                      ? parseInt(perf.performance_val).toFixed(1)
+                      : '-'}
                   </td>
                 )
               })}

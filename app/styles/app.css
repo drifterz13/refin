@@ -630,6 +630,10 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
 .block {
   display: block;
 }
@@ -692,6 +696,10 @@ video {
 
 .w-6 {
   width: 1.5rem;
+}
+
+.w-3\/5 {
+  width: 60%;
 }
 
 .max-w-sm {
@@ -1104,6 +1112,13 @@ video {
 
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .hover\:bg-gray-100:hover {
