@@ -3,6 +3,7 @@ import { Await, useLoaderData } from '@remix-run/react'
 import { Suspense } from 'react'
 import FundPerformanceTable from '~/components/FundPerformanceTable.react'
 import Spinner from '~/components/Spinner.react'
+import TruncateText from '~/components/TruncateText.react'
 import {
   getFundByAbbrName,
   getFundPerformance,
@@ -26,11 +27,8 @@ export default function FundFromAbbrName() {
         {data.fund.proj_abbr_name}
       </h2>
       <p className='text-gray-600 opacity-75'>{data.fund.proj_name_th}</p>
-      <div
-        className='text-gray-700 mt-5 w-3/5 line-clamp-4'
-        dangerouslySetInnerHTML={{
-          __html: data.fundPolicy.investment_policy_desc.replace(/•/g, '\n'),
-        }}
+      <TruncateText
+        text={data.fundPolicy.investment_policy_desc.replace(/•/g, '\n')}
       />
 
       <hr className='h-0.5 bg-gray-800 w-full my-5' />
