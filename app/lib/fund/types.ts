@@ -32,3 +32,19 @@ export type Fund = {
   permit_us_investment: string
   invest_country_flag: string
 }
+
+export type FundPerformance = {
+  last_upd_date: string
+  class_abbr_name: string
+  performance_type_desc: string
+  reference_period: string
+  performance_val: string
+  as_of_date: string
+}
+
+export enum PerformanceType {
+  FUND_VOLA = 'ความผันผวนของกองทุนรวม',
+  INDI_VOLA = 'ความผันผวนของตัวชี้วัด',
+  FUND_RETURN = 'ผลตอบแทนกองทุนรวม',
+  INDI_RETURN = 'ผลตอบแทนตัวชี้วัด',
+}

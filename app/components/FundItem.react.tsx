@@ -8,9 +8,7 @@ export default function FundItem(props: { fund: Fund }) {
     <div
       data-proj-id={props.fund.proj_id}
       className='col-span-1 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 cursor-pointer'
-      onClick={() =>
-        navigate(`funds/${props.fund.proj_id}`)
-      }
+      onClick={() => navigate(`/funds/${props.fund.proj_abbr_name}`)}
     >
       <h5 className='mb-2 text-xl font-bold tracking-tight text-gray-900'>
         {props.fund.proj_abbr_name}

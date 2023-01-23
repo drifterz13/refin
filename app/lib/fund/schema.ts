@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { FundStatus } from './types'
+import { FundStatus, PerformanceType } from './types'
 
 const fundAmcSchema = z.object({
   last_upd_date: z.string(),
@@ -8,7 +8,7 @@ const fundAmcSchema = z.object({
   name_en: z.string(),
 })
 
-const fundSchema = z.object({
+export const fundSchema = z.object({
   last_upd_date: z.string(),
   proj_id: z.string(),
   regis_id: z.string(),
@@ -31,3 +31,18 @@ const fundSchema = z.object({
 
 export const fundAmcListSchema = z.array(fundAmcSchema)
 export const fundListSchema = z.array(fundSchema)
+
+const fundPerfSchema = z.object({
+  last_upd_date: z.string(),
+  class_abbr_name: z.string(),
+  performance_type_desc: z.enum([
+    PerformanceType.FUND_VOLA,
+    PerformanceType.INDI_VOLA,
+    PerformanceType.FUND_RETURN,
+    PerformanceType.INDI_RETURN,
+  ]),
+  reference_period: z.string(),
+  performance_val: z.string(),
+  as_of_date: z.string(),
+})
+export const fundPerfListSchema = z.array(fundPerfSchema)
