@@ -702,6 +702,10 @@ video {
   width: 60%;
 }
 
+.w-4\/5 {
+  width: 80%;
+}
+
 .max-w-sm {
   max-width: 24rem;
 }
@@ -1119,6 +1123,13 @@ video {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.line-clamp-4 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 .hover\:bg-gray-100:hover {
