@@ -1,4 +1,8 @@
-import { FundPerformance, PerformanceType } from '~/lib/fund/types'
+import {
+  FundPerformance,
+  PerformancePeriod,
+  PerformanceType,
+} from '~/lib/fund/types'
 
 type Props = {
   abbr: string
@@ -10,11 +14,12 @@ type Props = {
 
 export default function FundPerformanceTable(props: Props) {
   const periods = [
-    { key: '3_month', title: '3m' },
-    { key: '6_month', title: '6m' },
-    { key: 'year_to_date', title: 'YTD' },
-    { key: '5_year', title: '5y' },
-    { key: 'ตั้งแต่จัดตั้ง', title: 'MAX' },
+    { key: PerformancePeriod['3M'], title: '3m' },
+    { key: PerformancePeriod['6M'], title: '6m' },
+    { key: PerformancePeriod.YTD, title: 'YTD' },
+    { key: PerformancePeriod['5Y'], title: '5y' },
+    { key: PerformancePeriod['10Y'], title: '10y' },
+    { key: PerformancePeriod.MAX, title: 'MAX' },
   ]
 
   return (

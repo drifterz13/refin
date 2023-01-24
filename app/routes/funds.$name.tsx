@@ -31,14 +31,14 @@ export default function FundFromAbbrName() {
         text={data.fundPolicy.investment_policy_desc.replace(/•/g, '\n')}
       />
 
-      <hr className='h-0.5 bg-gray-800 w-full my-5' />
+      <hr className='h-0.5 bg-blue-800 w-full my-5' />
 
       <Suspense fallback={<Spinner />}>
         <Await resolve={data.fundPerf}>
           {(fundPerf) => (
             <>
               {Object.keys(fundPerf).length === 0 && (
-                <h6 className='text-lg text-gray-800'>
+                <h6 className='text-lg text-red-800'>
                   Fund performance is not available.
                 </h6>
               )}
