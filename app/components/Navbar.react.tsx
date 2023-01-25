@@ -1,11 +1,6 @@
-import {
-  Bars3Icon,
-  MagnifyingGlassCircleIcon,
-  MagnifyingGlassIcon,
-} from '@heroicons/react/20/solid'
 import { Link, NavLink } from '@remix-run/react'
 import { clsx } from 'clsx'
-import { useState } from 'react'
+import SearchDialog from './SearchDialog.react'
 
 export default function Navbar() {
   return (
@@ -16,14 +11,7 @@ export default function Navbar() {
         </Link>
 
         <div className='flex items-center gap-5'>
-          <button className='p-2 w-48 flex text-sm items-baseline text-gray-500 bg-gray-50 border border-gray-300 rounded-lg'>
-            <MagnifyingGlassIcon className='w-3.5 h-3.5 mr-3' />
-            <span>Search</span>
-            <span className='ml-auto'>
-              <kbd>⌘</kbd>
-              <kbd>K</kbd>
-            </span>
-          </button>
+          <SearchDialog />
 
           <div>
             <ul className='flex space-x-8 text-sm'>
