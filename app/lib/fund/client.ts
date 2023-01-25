@@ -50,7 +50,7 @@ export const getAllFundAmc = async () => {
   return fundAmcListSchema.parse(dataJSON)
 }
 
-export const getFundAmcListById = async (
+export const getFundsById = async (
   id: FundAMC['unique_id']
 ): Promise<Fund[]> => {
   const cached = fundListCache.get(id)

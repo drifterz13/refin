@@ -3,7 +3,7 @@ import { Suspense, useEffect, useReducer, useRef, useState } from 'react'
 import { defer, LoaderArgs } from '@remix-run/node'
 import { Await, Outlet, useLoaderData } from '@remix-run/react'
 
-import { getFundAmcListById } from '~/lib/fund/client'
+import { getFundsById } from '~/lib/fund/client'
 import { createfundSearcher, Fund } from '~/lib/fund'
 
 import Spinner from '~/components/Spinner.react'
@@ -13,7 +13,7 @@ import FundItem from '~/components/FundItem.react'
 const INITIAL_DISPLAY = 20
 
 export async function loader({ params }: LoaderArgs) {
-  return defer({ fundList: getFundAmcListById(params.id as string) })
+  return defer({ fundList: getFundsById(params.id as string) })
 }
 
 export default function Funds() {

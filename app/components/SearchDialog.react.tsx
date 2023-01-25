@@ -1,17 +1,38 @@
+import _ from 'lodash'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { createfundSearcher, Fund } from '~/lib/fund'
 
-export default function SearchDialog() {
+type Props = {
+  funds: Fund[]
+}
+
+export default function SearchDialog(props: Props) {
+  const fundSearcherRef = useRef<ReturnType<typeof createfundSearcher>>()
   const [open, setOpen] = useState(false)
+  const [searchedFunds, setSearchedFunds] = useState<Fund[]>([])
 
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
 
+  const search = _.debounce((query: string) => {
+    const funds = fundSearcherRef.current!.search(query)
+    setSearchedFunds(funds)
+  }, 350)
+
+  useEffect(() => {
+    fundSearcherRef.current = createfundSearcher(props.funds, [
+      'proj_abbr_name',
+      'proj_name_en',
+      'proj_name_th',
+    ])
+  }, [props.funds])
+
   useEffect(() => {
     const handler = (e: globalThis.KeyboardEvent) => {
-      e.preventDefault()
       if (e.key === 'k' && e.metaKey) {
+        e.preventDefault()
         openModal()
       }
     }
@@ -60,24 +81,42 @@ export default function SearchDialog() {
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all'>
+                <Dialog.Panel className='w-full max-w-lg transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all'>
                   <div className='flex gap-2 items-center border-b-[1px] border-gray-200'>
                     <MagnifyingGlassIcon className='w-5 h-5 text-gray-500 mx-4' />
                     <input
                       placeholder='Search fund'
                       type='text'
                       className='h-12 flex-1 focus-visible:outline-none p-2'
+                      onChange={(e) => search(e.target.value)}
                     />
                   </div>
 
-                  <div className='p-4 flex flex-col gap-2'>
-                    <div className='font-semibold text-sm text-gray-600'>
-                      Result
-                    </div>
-
-                    <div className='flex flex-col gap-2 min-h-[100px]'>
-
-                    </div>
+                  <div className='flex flex-col p-4 gap-2 min-h-[100px] max-h-72 overflow-y-auto'>
+                    {searchedFunds.length > 0 ? (
+                      <Fragment>
+                        <div className='font-semibold text-sm text-gray-600'>
+                          Result
+                        </div>
+                        {searchedFunds.map((fund) => (
+                          <div
+                            key={`${fund.unique_id}_${fund.proj_abbr_name}`}
+                            className='px-6 py-3 rounded-xl bg-slate-100 shadow-sm font-medium hover:bg-blue-600 hover:text-white'
+                          >
+                            <div className='uppercase font-semibold'>
+                              {fund.proj_abbr_name}
+                            </div>
+                            <div className='text-xs opacity-60 truncate'>
+                              {fund.proj_name_en}
+                            </div>
+                          </div>
+                        ))}
+                      </Fragment>
+                    ) : (
+                      <div className='text-gray-400 font-light flex-1 grid place-content-center'>
+                        No search results
+                      </div>
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

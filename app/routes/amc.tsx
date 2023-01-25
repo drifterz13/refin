@@ -1,17 +1,13 @@
-import { json } from '@remix-run/node'
-import { Outlet, useLoaderData, useParams } from '@remix-run/react'
+import { Outlet, useParams, useRouteLoaderData } from '@remix-run/react'
 import FundAmcSelectList from '~/components/FundAmcSelectList.react'
 import { getAllFundAmc } from '~/lib/fund'
 import { useMemo } from 'react'
 
-export async function loader() {
-  const fundAmcList = await getAllFundAmc()
-
-  return json({ fundAmcList })
-}
-
 export default function FundsIndex() {
-  const { fundAmcList } = useLoaderData<typeof loader>()
+  const { fundAmcList } = useRouteLoaderData('root') as {
+    fundAmcList: Awaited<ReturnType<typeof getAllFundAmc>>
+  }
+
   const { id: fundAmcId } = useParams()
 
   const selectableFundList = useMemo(() => {
@@ -41,7 +37,9 @@ export default function FundsIndex() {
 
   return (
     <div>
-      <h2 className='text-xl font-semibold text-gray-800 mb-5'>Select Fund's AMC</h2>
+      <h2 className='text-xl font-semibold text-gray-800 mb-5'>
+        Select Fund's AMC
+      </h2>
       <FundAmcSelectList
         fundAmcList={selectableFundList}
         selectedFund={selectedFund}
