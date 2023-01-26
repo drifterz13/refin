@@ -1,5 +1,5 @@
-import { defer, LoaderArgs, redirect } from '@remix-run/node'
-import { NavLink, Outlet, useLoaderData, useNavigate } from '@remix-run/react'
+import { defer, LoaderArgs } from '@remix-run/node'
+import { NavLink, Outlet, useLoaderData } from '@remix-run/react'
 import clsx from 'clsx'
 import TruncateText from '~/components/TruncateText.react'
 import { getFundByAbbrName, getFundPolicy } from '~/lib/fund/client'
@@ -31,7 +31,7 @@ export default function FundFromAbbrName() {
       <hr className='h-0.5 bg-blue-800 w-full my-5' />
 
       <div className='text-right'>
-        <NavLink to='performance'>
+        <NavLink to={`${data.fund.proj_id}/performance`}>
           {({ isActive }) => (
             <span
               className={clsx(
@@ -44,7 +44,7 @@ export default function FundFromAbbrName() {
           )}
         </NavLink>
         <span className='text-gray-600 text-sm font-semibold'>|</span>
-        <NavLink to={'dividend'}>
+        <NavLink to={`${data.fund.proj_id}/dividend`}>
           {({ isActive }) => (
             <span
               className={clsx(

@@ -3,15 +3,13 @@ import { useLoaderData, Await } from '@remix-run/react'
 import { Suspense } from 'react'
 import FundDividendHistoryTable from '~/components/FundDividendHistoryTable.react'
 import Spinner from '~/components/Spinner.react'
-import { getFundByAbbrName } from '~/lib/fund/client'
 import { getFundDividendHistories } from '~/lib/fund_daily'
 
 export async function loader({ params }: LoaderArgs) {
-  const { name } = params
-  const fund = await getFundByAbbrName(name as string)
+  const { proj_id } = params as { proj_id: string }
 
   return defer({
-    fundDividends: getFundDividendHistories(fund.proj_id),
+    fundDividends: getFundDividendHistories(proj_id),
   })
 }
 

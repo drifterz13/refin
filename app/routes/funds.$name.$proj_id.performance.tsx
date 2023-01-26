@@ -4,17 +4,15 @@ import { Suspense } from 'react'
 import FundPerformanceTable from '~/components/FundPerformanceTable.react'
 import Spinner from '~/components/Spinner.react'
 import { getFundPerformance } from '~/lib/fund'
-import { getFundByAbbrName, getFundPolicy } from '~/lib/fund/client'
+import { getFundPolicy } from '~/lib/fund/client'
 
 export async function loader({ params }: LoaderArgs) {
-  const { name } = params
-  const fund = await getFundByAbbrName(name as string)
-  const fundPolicy = await getFundPolicy(fund.proj_id)
+  const { proj_id } = params as { name: string; proj_id: string }
+  const fundPolicy = await getFundPolicy(proj_id)
 
   return defer({
-    fund,
     fundPolicy,
-    fundPerf: getFundPerformance(fund.proj_id),
+    fundPerf: getFundPerformance(proj_id),
   })
 }
 
