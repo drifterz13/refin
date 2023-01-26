@@ -14,7 +14,7 @@ export default function SearchResult(props: Props) {
           <div className='font-semibold text-sm text-gray-600'>Result</div>
           {props.funds.map((fund) => (
             <Link
-              to={`/funds/${fund.proj_abbr_name}`}
+              to={`/funds/${fund.proj_abbr_name}/dividend`}
               onClick={props.onClick}
               key={fund.proj_abbr_name}
               className='px-6 py-3 rounded-xl bg-slate-100 shadow-sm font-medium hover:bg-blue-600 hover:text-white'

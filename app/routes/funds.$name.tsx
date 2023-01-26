@@ -1,16 +1,8 @@
-import { defer, LoaderArgs } from '@remix-run/node'
-import { Await, useLoaderData } from '@remix-run/react'
-import { Suspense } from 'react'
-import FundDividendHistoryTable from '~/components/FundDividendHistoryTable.react'
-import FundPerformanceTable from '~/components/FundPerformanceTable.react'
-import Spinner from '~/components/Spinner.react'
+import { defer, LoaderArgs, redirect } from '@remix-run/node'
+import { NavLink, Outlet, useLoaderData, useNavigate } from '@remix-run/react'
+import clsx from 'clsx'
 import TruncateText from '~/components/TruncateText.react'
-import {
-  getFundByAbbrName,
-  getFundPerformance,
-  getFundPolicy,
-} from '~/lib/fund/client'
-import { getFundDividendHistories } from '~/lib/fund_daily'
+import { getFundByAbbrName, getFundPolicy } from '~/lib/fund/client'
 
 export async function loader({ params }: LoaderArgs) {
   const { name } = params
@@ -20,8 +12,6 @@ export async function loader({ params }: LoaderArgs) {
   return defer({
     fund,
     fundPolicy,
-    fundPerf: getFundPerformance(fund.proj_id),
-    fundDividends: getFundDividendHistories(fund.proj_id),
   })
 }
 
@@ -40,42 +30,35 @@ export default function FundFromAbbrName() {
 
       <hr className='h-0.5 bg-blue-800 w-full my-5' />
 
-      <Suspense fallback={<Spinner />}>
-        <Await resolve={data.fundPerf}>
-          {(fundPerf) => (
-            <>
-              {Object.keys(fundPerf).length === 0 && (
-                <h6 className='text-lg text-red-800'>
-                  Fund performance is not available.
-                </h6>
+      <div className='text-right'>
+        <NavLink to='performance'>
+          {({ isActive }) => (
+            <span
+              className={clsx(
+                'text-gray-600 text-sm font-normal mx-2 hover:text-blue-600',
+                isActive && 'text-blue-600'
               )}
-              {Object.keys(fundPerf).map((abbr) => {
-                return (
-                  <FundPerformanceTable
-                    key={abbr}
-                    abbr={abbr}
-                    fundPerfs={fundPerf[abbr]}
-                  />
-                )
-              })}
-            </>
+            >
+              Performance
+            </span>
           )}
-        </Await>
-      </Suspense>
+        </NavLink>
+        <span className='text-gray-600 text-sm font-semibold'>|</span>
+        <NavLink to={'dividend'}>
+          {({ isActive }) => (
+            <span
+              className={clsx(
+                'text-gray-600 text-sm font-normal mx-2 hover:text-blue-600',
+                isActive && 'text-blue-600'
+              )}
+            >
+              Dividend
+            </span>
+          )}
+        </NavLink>
+      </div>
 
-      <hr className='h-0.5 bg-blue-800 w-full my-5' />
-
-      <Suspense fallback={<Spinner />}>
-        <Await resolve={data.fundDividends}>
-          {(fundDividends) =>
-            fundDividends.length > 0 ? (
-              <FundDividendHistoryTable fundDividends={fundDividends} />
-            ) : (
-              <></>
-            )
-          }
-        </Await>
-      </Suspense>
+      <Outlet />
     </div>
   )
 }
