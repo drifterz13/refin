@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { createfundSearcher, Fund } from '~/lib/fund'
+import SearchResult from './SearchResult.react'
 
 type Props = {
   funds: Fund[]
@@ -92,32 +93,7 @@ export default function SearchDialog(props: Props) {
                     />
                   </div>
 
-                  <div className='flex flex-col p-4 gap-2 min-h-[100px] max-h-72 overflow-y-auto'>
-                    {searchedFunds.length > 0 ? (
-                      <Fragment>
-                        <div className='font-semibold text-sm text-gray-600'>
-                          Result
-                        </div>
-                        {searchedFunds.map((fund) => (
-                          <div
-                            key={`${fund.unique_id}_${fund.proj_abbr_name}`}
-                            className='px-6 py-3 rounded-xl bg-slate-100 shadow-sm font-medium hover:bg-blue-600 hover:text-white'
-                          >
-                            <div className='uppercase font-semibold'>
-                              {fund.proj_abbr_name}
-                            </div>
-                            <div className='text-xs opacity-60 truncate'>
-                              {fund.proj_name_en}
-                            </div>
-                          </div>
-                        ))}
-                      </Fragment>
-                    ) : (
-                      <div className='text-gray-400 font-light flex-1 grid place-content-center'>
-                        No search results
-                      </div>
-                    )}
-                  </div>
+                  <SearchResult funds={searchedFunds} onClick={closeModal} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
