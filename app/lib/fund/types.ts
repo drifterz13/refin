@@ -43,10 +43,10 @@ export type FundPerformance = {
 }
 
 export enum PerformanceType {
-  FUND_VOLA = 'ความผันผวนของกองทุนรวม',
-  INDI_VOLA = 'ความผันผวนของตัวชี้วัด',
   FUND_RETURN = 'ผลตอบแทนกองทุนรวม',
   INDI_RETURN = 'ผลตอบแทนตัวชี้วัด',
+  FUND_VOLA = 'ความผันผวนของกองทุนรวม',
+  INDI_VOLA = 'ความผันผวนของตัวชี้วัด',
 }
 
 export enum PerformancePeriod {
