@@ -67,9 +67,13 @@ export default function FundFromAbbrName() {
 
       <Suspense fallback={<Spinner />}>
         <Await resolve={data.fundDividends}>
-          {(fundDividends) => (
-            <FundDividendHistoryTable fundDividends={fundDividends} />
-          )}
+          {(fundDividends) =>
+            fundDividends.length > 0 ? (
+              <FundDividendHistoryTable fundDividends={fundDividends} />
+            ) : (
+              <></>
+            )
+          }
         </Await>
       </Suspense>
     </div>

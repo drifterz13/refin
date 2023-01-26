@@ -30,8 +30,11 @@ export const getFundDividendHistories = async (
   }
 
   const data = await fundDailyClient.get(`/${projectId}/dividend`)
+  if (data.status === 204) {
+    return []
+  }
+
   const dataJSON = await data.json()
-  console.log(dataJSON)
   const dividendHistories = fundDividendHistoriesSchema.parse(dataJSON)
 
   fundDividendCache.set(projectId, dividendHistories)
