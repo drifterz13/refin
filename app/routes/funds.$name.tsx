@@ -1,6 +1,7 @@
 import { defer, LoaderArgs } from '@remix-run/node'
 import { Await, useLoaderData } from '@remix-run/react'
 import { Suspense } from 'react'
+import FundDividendHistoryTable from '~/components/FundDividendHistoryTable.react'
 import FundPerformanceTable from '~/components/FundPerformanceTable.react'
 import Spinner from '~/components/Spinner.react'
 import TruncateText from '~/components/TruncateText.react'
@@ -9,13 +10,19 @@ import {
   getFundPerformance,
   getFundPolicy,
 } from '~/lib/fund/client'
+import { getFundDividendHistories } from '~/lib/fund_daily'
 
 export async function loader({ params }: LoaderArgs) {
   const { name } = params
   const fund = await getFundByAbbrName(name as string)
   const fundPolicy = await getFundPolicy(fund.proj_id)
 
-  return defer({ fund, fundPolicy, fundPerf: getFundPerformance(fund.proj_id) })
+  return defer({
+    fund,
+    fundPolicy,
+    fundPerf: getFundPerformance(fund.proj_id),
+    fundDividends: getFundDividendHistories(fund.proj_id),
+  })
 }
 
 export default function FundFromAbbrName() {
@@ -52,6 +59,16 @@ export default function FundFromAbbrName() {
                 )
               })}
             </>
+          )}
+        </Await>
+      </Suspense>
+
+      <hr className='h-0.5 bg-blue-800 w-full my-5' />
+
+      <Suspense fallback={<Spinner />}>
+        <Await resolve={data.fundDividends}>
+          {(fundDividends) => (
+            <FundDividendHistoryTable fundDividends={fundDividends} />
           )}
         </Await>
       </Suspense>

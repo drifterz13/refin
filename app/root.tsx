@@ -12,7 +12,7 @@ import {
 import { Suspense } from 'react'
 import Navbar from './components/Navbar.react'
 import SearchDialog from './components/SearchDialog.react'
-import { getAllFundAmc, getFundByIds, getFundsById } from './lib/fund'
+import { getAllFundAmc, getFundByIds } from './lib/fund'
 
 import styles from './styles/app.css'
 
