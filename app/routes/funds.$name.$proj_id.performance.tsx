@@ -25,9 +25,9 @@ export default function FundPerformance() {
         {(fundPerf) => (
           <>
             {Object.keys(fundPerf).length === 0 && (
-              <h6 className='text-lg text-red-800'>
+              <div className='text-red-500 font-normal mt-5'>
                 Fund performance is not available.
-              </h6>
+              </div>
             )}
             {Object.keys(fundPerf).map((abbr) => {
               return (
