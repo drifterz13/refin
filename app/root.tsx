@@ -12,7 +12,7 @@ import {
 import { Suspense } from 'react'
 import Navbar from './components/Navbar.react'
 import SearchDialog from './components/SearchDialog.react'
-import { getAllFundAmc, getFundsById } from './lib/fund'
+import { getAllFundAmc, getFundByIds, getFundsById } from './lib/fund'
 
 import styles from './styles/app.css'
 
@@ -29,9 +29,8 @@ export const meta: MetaFunction = () => ({
 export async function loader() {
   const fundAmcList = await getAllFundAmc()
   const fundIds = fundAmcList.map((amc) => amc.unique_id)
-  const funds = Promise.all(fundIds.map(getFundsById))
 
-  return defer({ fundAmcList, funds })
+  return defer({ fundAmcList, funds: getFundByIds(fundIds) })
 }
 
 export default function App() {

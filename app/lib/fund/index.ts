@@ -1,4 +1,9 @@
-export { getAllFundAmc, getFundsById, getFundPerformance } from './client'
+export {
+  getAllFundAmc,
+  getFundsById,
+  getFundByIds,
+  getFundPerformance,
+} from './client'
 export { fundAmcListSchema } from './schema'
 export { createfundSearcher } from './fundSearcher'
 

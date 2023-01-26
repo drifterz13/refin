@@ -50,6 +50,12 @@ export const getAllFundAmc = async () => {
   return fundAmcListSchema.parse(dataJSON)
 }
 
+export const getFundByIds = async (
+  fundIds: Array<FundAMC['unique_id']>
+): Promise<Fund[][]> => {
+  return Promise.all(fundIds.map(getFundsById))
+}
+
 export const getFundsById = async (
   id: FundAMC['unique_id']
 ): Promise<Fund[]> => {
